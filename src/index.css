@@ -1,0 +1,744 @@
+:root {
+  color-scheme: light dark;
+  font-family: system-ui, sans-serif;
+  line-height: 1.4;
+  --border: light-dark(#c9c9d1, #46464f);
+  --muted: light-dark(#63636e, #a3a3ad);
+  --surface: light-dark(#f3f3f6, #26262c);
+  --accent: light-dark(#3657c9, #8ba3ff);
+  --danger: light-dark(#b3261e, #ff8a80);
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 0.75rem 1rem 3rem;
+}
+
+.top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.logo {
+  margin-right: 0.25rem;
+  vertical-align: -0.2em;
+}
+
+.settings {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.status {
+  margin: 0.5rem 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.problem {
+  margin: 0.25rem 0;
+  color: var(--danger);
+  font-size: 0.875rem;
+}
+
+/* Query input */
+
+.query {
+  position: relative;
+}
+
+.query-field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.375rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  cursor: text;
+}
+
+.query-field:focus-within {
+  border-color: var(--accent);
+  outline: 1px solid var(--accent);
+}
+
+.query-clear {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: auto;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  /* The cross is drawn, so that it sits at the center whatever the font. */
+  display: grid;
+  place-items: center;
+}
+
+.query-clear path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.query-clear:hover {
+  color: inherit;
+}
+
+.query-text {
+  flex: 1 1 8rem;
+  min-width: 8rem;
+  padding: 0.25rem;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.25rem 0.125rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--surface);
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.chip-op {
+  border-style: dashed;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.chip-flagged {
+  border-color: var(--danger);
+  outline: 1px solid var(--danger);
+}
+
+.chip-group {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.chip-remove {
+  padding: 0 0.25rem;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.chip-remove:hover {
+  opacity: 1;
+}
+
+.suggestions {
+  position: absolute;
+  z-index: 2;
+  inset-inline: 0;
+  max-height: 22rem;
+  margin: 0.25rem 0 0;
+  padding: 0.25rem;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: Canvas;
+  box-shadow: 0 0.25rem 1rem rgb(0 0 0 / 20%);
+  list-style: none;
+}
+
+.suggestion {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.suggestion-active {
+  background: var(--surface);
+}
+
+.suggestion-group {
+  flex: 0 0 6.5rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+/* Results */
+
+.row {
+  display: grid;
+  grid-template-columns: 3.25rem minmax(10rem, 1.2fr) 8rem minmax(10rem, 1.5fr) repeat(6, 2.5rem) 3rem 7rem;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0 0.25rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.875rem;
+}
+
+.row-header {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+  min-height: 2rem;
+  background: Canvas;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.sort {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.sort[aria-pressed='true'] {
+  color: var(--accent);
+}
+
+.cell-art {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.cell-art img {
+  object-fit: contain;
+}
+
+.dex,
+.form-name {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.cell-types {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.type {
+  padding: 0.0625rem 0.375rem;
+  border-radius: 0.25rem;
+  color: #fff;
+  font-size: 0.75rem;
+}
+
+.cell-abilities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.5rem;
+}
+
+.ability-hidden {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.cell-stat {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.cell-bst {
+  font-weight: 600;
+}
+
+.cell-games {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  text-align: right;
+}
+
+.varies {
+  color: var(--accent);
+  cursor: help;
+}
+
+@media (width < 60rem) {
+  .row {
+    grid-template-columns: 3.25rem minmax(8rem, 1fr) 8rem 3rem 6rem;
+  }
+
+  /* Only in the rows of results: the dialog uses these classes too. */
+  .row .cell-abilities,
+  .row .cell-stat:not(.cell-bst) {
+    display: none;
+  }
+}
+
+.row-result {
+  cursor: pointer;
+}
+
+.row-result:hover,
+.row-result:focus-visible {
+  background: var(--surface);
+  outline: none;
+}
+
+/* Dialogs */
+
+.dialog {
+  width: min(60rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: Canvas;
+  color: CanvasText;
+}
+
+.dialog::backdrop {
+  background: rgb(0 0 0 / 50%);
+}
+
+.dialog-body {
+  padding: 1rem 1.25rem 1.5rem;
+  font-size: 0.875rem;
+}
+
+.dialog h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.dialog h3 {
+  margin: 1.25rem 0 0.375rem;
+  font-size: 1rem;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dialog-close {
+  padding: 0 0.5rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.evolution {
+  margin: 0;
+  line-height: 1.8;
+}
+
+.classification {
+  margin: 0.125rem 0 0;
+  color: var(--muted);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: 0.5rem 1.5rem;
+  margin: 0.75rem 0 0;
+}
+
+.facts dt {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.facts dd {
+  margin: 0;
+}
+
+/* The artwork comes last, and is on top when there is no room beside the values. */
+.detail-top {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem 2rem;
+  margin-top: 0.75rem;
+}
+
+.detail-art {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.detail-art img {
+  object-fit: contain;
+}
+
+.detail-values {
+  flex: 0 1 26rem;
+}
+
+.detail-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem 3rem;
+  margin-top: 1.5rem;
+}
+
+.detail-stats > div {
+  flex: 0 1 30rem;
+}
+
+.stats thead th {
+  width: auto;
+  padding-bottom: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.stats .stat-range {
+  width: 3.25rem;
+  padding: 0 0 0 0.5rem;
+  text-align: right;
+}
+
+.stats th.stat-range {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.toggle {
+  display: inline-flex;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.toggle button {
+  padding: 0.0625rem 0.5rem;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+.toggle button:first-child {
+  border-radius: 0.375rem 0 0 0.375rem;
+}
+
+.toggle button + button {
+  border-left: 0;
+}
+
+.toggle button:last-child {
+  border-radius: 0 0.375rem 0.375rem 0;
+}
+
+.toggle button[aria-pressed='true'] {
+  background: var(--surface);
+  color: inherit;
+}
+
+.detail-stats h3 {
+  margin: 0 0 0.25rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* A section that opens, whose parts open in turn. */
+.dialog .detail-section {
+  margin-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.dialog .detail-section > summary {
+  padding: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.dialog .detail-section details {
+  margin-left: 1rem;
+}
+
+.detail-values h3 {
+  margin: 0.75rem 0 0.25rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.detail-values h3:first-child {
+  margin-top: 0;
+}
+
+.stat-plot {
+  flex: none;
+}
+
+.stat-plot-grid {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.stat-plot-area {
+  fill: color-mix(in srgb, var(--accent) 35%, transparent);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.stat-plot-label {
+  fill: var(--muted);
+  font-size: 0.6875rem;
+}
+
+.detail-values p {
+  margin: 0 0 0.5rem;
+}
+
+.stats {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.stats th {
+  width: 2.5rem;
+  color: var(--muted);
+  font-weight: normal;
+  text-align: left;
+}
+
+/* The stats' names are as wide as the longest of them in the language, and no wider. */
+.stats tbody th {
+  width: 1%;
+  padding-right: 0.75rem;
+  white-space: nowrap;
+}
+
+.stats .cell-stat {
+  width: 2.5rem;
+  padding-right: 0.5rem;
+}
+
+.stat-bar span {
+  display: block;
+  height: 0.5rem;
+  border-radius: 0.25rem;
+  background: var(--accent);
+}
+
+/* As wide as its contents and the gaps between its columns, and no wider than there is room: long cells wrap. */
+.listing {
+  width: auto;
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+.listing th,
+.listing td {
+  padding: 0.125rem 2.5rem 0.125rem 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.listing th {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.listing th.cell-stat {
+  text-align: right;
+}
+
+.listing th:last-child,
+.listing td:last-child {
+  padding-right: 0.5rem;
+}
+
+/* The button that opens an encounter into its slots, or the room for one, so that every location starts at the same place. */
+.expand {
+  display: inline-block;
+  width: 1.25rem;
+  margin-right: 0.125rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+
+span.expand {
+  cursor: auto;
+}
+
+/* The region that the rows after it are in. */
+.listing .region th {
+  padding-top: 0.625rem;
+  color: inherit;
+  font-size: 0.8125rem;
+}
+
+/* One slot of an encounter that is opened. */
+.listing .slot td {
+  border-bottom-style: dashed;
+  color: var(--muted);
+}
+
+/* What the query selects. */
+.listing .matches td:first-child {
+  box-shadow: inset 3px 0 var(--accent);
+  padding-left: 0.5rem;
+  font-weight: 600;
+}
+
+.category {
+  text-transform: capitalize;
+}
+
+.dialog details {
+  margin: 0.25rem 0;
+}
+
+.dialog summary {
+  padding: 0.25rem 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.dialog details[open] {
+  margin-bottom: 1rem;
+}
+
+/* The Pokédex entries, each beside the games it is from. */
+.entries {
+  border-collapse: collapse;
+}
+
+.entries th,
+.entries td {
+  padding: 0.25rem 0;
+  vertical-align: top;
+  text-align: left;
+}
+
+.entries th {
+  padding-right: 1.5rem;
+  color: var(--muted);
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.description {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.help-section {
+  margin-top: 1.25rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.help-section p {
+  margin: 0.375rem 0;
+  line-height: 1.6;
+}
+
+.help-section .meanings {
+  margin: 0.375rem 0;
+  padding-left: 1.25rem;
+  line-height: 1.6;
+}
+
+.help-section .meanings li {
+  margin: 0.125rem 0;
+}
+
+.help-section .examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+}
+
+.help,
+.example {
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  background: var(--surface);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.example {
+  font-family: ui-monospace, monospace;
+  font-size: 0.8125rem;
+  text-align: left;
+}
+
+code {
+  padding: 0 0.25rem;
+  border-radius: 0.25rem;
+  background: var(--surface);
+  font-size: 0.8125rem;
+}

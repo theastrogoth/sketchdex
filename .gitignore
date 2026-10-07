@@ -1,0 +1,39 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# temporary downloads
+.cache
+
+# development scripts
+scripts/build-data.ts
+scripts/build-data.test.ts
+scripts/make-images.py
+scripts/__pycache__
+scripts/build-translations.ts
+scripts/translations.ts
+scripts/translations.test.ts
+scripts/vocabulary.ts
+scripts/descriptions.ts
+scripts/translation-coverage.txt
