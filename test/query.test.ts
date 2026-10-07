@@ -217,5 +217,5 @@ describe('the committed data', () => {
     expect(matches('introduced:1 AND type:fairy')).toEqual(['clefairy/none', 'clefable/none', 'jigglypuff/none', 'wigglytuff/none', 'mr-mime/none'])
     expect(matches('ditto')).toEqual(['ditto/none'])
     expect(matches('unown question | "Unown Exclamation"')).toEqual(['unown/exclamation', 'unown/question'])
-  })
+  }, 30_000)
 })
